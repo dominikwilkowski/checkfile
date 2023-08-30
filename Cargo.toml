@@ -1,0 +1,17 @@
+[package]
+name = "checkfile"
+version = "0.1.0"
+edition = "2021"
+authors = ["Dominik Wilkowski <Hi@Dominik-Wilkowski.com>"]
+license = "GPL-3.0-or-later"
+description = "A command line tool that logs the checksum and last 50 lines of each file in a folder."
+readme = "README.md"
+homepage = "https://github.com/dominikwilkowski/checkfile"
+repository = "https://github.com/dominikwilkowski/checkfile"
+keywords = ["command line", "checkfile", "checksum", "tail", "log"]
+categories = ["command-line-interface", "command-line-utilities"]
+
+[dependencies]
+exitcode = "1.1.2"
+rev_buf_reader = "0.3.0"
+sha256 = "1.4.0"
