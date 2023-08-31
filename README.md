@@ -4,6 +4,10 @@
  ╚═╝ ╩ ╩ ╚═╝ ╚═╝ ╩ ╩ ╚   ╩ ╩═╝ ╚═╝
 ```
 
+<p align="center">
+	<a href="https://crates.io/crates/checkfile"><img src="https://img.shields.io/crates/v/checkfile.svg" alt="checkfile badge"></a>
+</p>
+
 <p align="center">A command line tool that logs the checksum and last 50 lines of each file in a folder written in rust</p>
 
 > I use this to verify some backblaze log files and to see how things are changing that may cause unwanted safety freezes.
