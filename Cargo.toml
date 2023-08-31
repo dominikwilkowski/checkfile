@@ -8,7 +8,7 @@ description = "A command line tool that logs the checksum and last 50 lines of e
 readme = "README.md"
 homepage = "https://github.com/dominikwilkowski/checkfile"
 repository = "https://github.com/dominikwilkowski/checkfile"
-keywords = ["command line", "checkfile", "checksum", "tail", "log"]
+keywords = ["commandline", "checkfile", "checksum", "tail", "log"]
 categories = ["command-line-interface", "command-line-utilities"]
 
 [dependencies]
