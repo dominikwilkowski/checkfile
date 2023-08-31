@@ -12,6 +12,7 @@ keywords = ["command line", "checkfile", "checksum", "tail", "log"]
 categories = ["command-line-interface", "command-line-utilities"]
 
 [dependencies]
-exitcode = "1.1.2"
+clap = { version = "4", features = ["cargo"] }
+exitcode = "1"
 rev_buf_reader = "0.3.0"
-sha256 = "1.4.0"
+sha256 = "1"
