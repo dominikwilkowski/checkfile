@@ -92,6 +92,18 @@ Set this amount of lines that should be included into the log file for each chec
 λ checkfile -l 10
 ```
 
+### -d, --dotfiles
+Type: `<bool>`  
+Default value: `false`
+
+Set to include dot files in your log.
+
+```sh
+λ checkfile -d
+```
+
+_💡 Note: This may cause a crash if the dot files contain non-UTF-8 contents_
+
 ## License
 Copyleft (c) 2023 Dominik Wilkowski.
 Licensed under the [GNU GPL-3.0-or-later](https://github.com/dominikwilkowski/checkfile/blob/main/LICENSE).
