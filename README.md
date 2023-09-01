@@ -27,8 +27,8 @@ You can `cd` into a folder and just run the tool with its defaults:
 ```sh
 λ cd path/to/folder
 λ checkfile
-
 The log for 11 files was written successfully to ./checkfile.log
+Finished in 1.30ms
 ```
 
 This will create a file called `checkfile.log` that contains the name, checksum and last 50 lines of each file found in the current directory.
