@@ -57,7 +57,6 @@ contents of file
 [...]
 contents of file
 <--
-
 ```
 
 ### <PATH>
