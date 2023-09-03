@@ -1,8 +1,7 @@
 use clap::{crate_version, Command};
-use rev_buf_reader::RevBufReader;
+use rev_lines::RevLines;
 use std::fs;
 use std::io;
-use std::io::BufRead;
 use std::path::PathBuf;
 use std::time::Instant;
 
@@ -74,6 +73,13 @@ fn main() -> Result<(), io::Error> {
 }
 
 fn lines_from_file(file: &fs::File, limit: usize) -> String {
-	let buf = RevBufReader::new(file);
-	buf.lines().take(limit).map(|l| l.expect("Could not parse line")).collect::<Vec<String>>().join("\n")
+	let reader = RevLines::new(file);
+	reader
+		.take(limit)
+		.map(|line| match line {
+			Ok(this_line) => this_line,
+			Err(_) => String::from("[- binary data -]"),
+		})
+		.collect::<Vec<String>>()
+		.join("\n")
 }

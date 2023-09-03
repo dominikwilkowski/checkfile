@@ -101,7 +101,7 @@ Set to include dot files in your log.
 λ checkfile -d
 ```
 
-_💡 Note: This may cause a crash if the dot files contain non-UTF-8 contents_
+_💡 Note: If checkfiles encounters a binary file it will try to read it and mark lines it couldn't with `[- binary data -]`_
 
 ## License
 Copyleft (c) 2023 Dominik Wilkowski.
