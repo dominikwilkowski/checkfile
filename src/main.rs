@@ -45,7 +45,9 @@ fn main() -> Result<(), io::Error> {
 	let files = fs::read_dir(user_path)?
 		.filter(|r| r.is_ok())
 		.map(|r| r.unwrap().path())
-		.filter(|r| !r.is_dir() && !r.to_str().unwrap().starts_with('.') || !r.is_dir() && *user_dotfiles)
+		.filter(|r| {
+			!r.is_dir() && !r.file_name().unwrap().to_str().unwrap().starts_with('.') || !r.is_dir() && *user_dotfiles
+		})
 		.collect::<Vec<PathBuf>>();
 
 	let files_count = files.len();
