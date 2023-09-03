@@ -9,7 +9,13 @@ fn main() -> Result<(), io::Error> {
 	let now = Instant::now();
 
 	let matches = Command::new("checkfile")
-		.about(" ╔═╗ ╦ ╦ ╔═╗ ╔═╗ ╦╔═ ╔═╗ ╦ ╦   ╔═╗\n ║   ╠═╣ ║╣  ║   ╠╩╗ ╠╣  ║ ║   ║╣\n ╚═╝ ╩ ╩ ╚═╝ ╚═╝ ╩ ╩ ╚   ╩ ╩═╝ ╚═╝\n\nA command line tool that logs the name, checksum and last 50 lines of each file of a folder in a log file.")
+		.about(
+			" ╔═╗ ╦ ╦ ╔═╗ ╔═╗ ╦╔═ ╔═╗ ╦ ╦   ╔═╗\n \
+			  ║   ╠═╣ ║╣  ║   ╠╩╗ ╠╣  ║ ║   ║╣\n \
+			  ╚═╝ ╩ ╩ ╚═╝ ╚═╝ ╩ ╩ ╚   ╩ ╩═╝ ╚═╝\n\n\
+			A command line tool that writes the name, \
+			checksum and last 50 lines of each file of a folder in a log file.",
+		)
 		.author("Dominik Wilkowski <hi@dominik-wilkowski.com>")
 		.version(crate_version!())
 		.arg(
@@ -19,25 +25,19 @@ fn main() -> Result<(), io::Error> {
 				.default_value("."),
 		)
 		.arg(
-			clap::arg!(-l --lines <VALUE> "Set the lines of each")
-				.required(false)
-				.value_parser(clap::value_parser!(usize))
-				.default_value("50"),
-		)
-		.arg(
 			clap::arg!(-o --output <FILE> "Set the output file")
 				.required(false)
 				.value_parser(clap::value_parser!(PathBuf))
 				.default_value("./checkfile.log"),
 		)
 		.arg(
-			clap::arg!(-d --dotfiles "Include dot files in the output")
-				.required(false),
+			clap::arg!(-l --lines <VALUE> "Set the lines of each")
+				.required(false)
+				.value_parser(clap::value_parser!(usize))
+				.default_value("50"),
 		)
-		.arg(
-			clap::arg!(-r --reverse "Reverse the output lines")
-				.required(false),
-		)
+		.arg(clap::arg!(-d --dotfiles "Include dot files in the output").required(false))
+		.arg(clap::arg!(-r --reverse "Reverse the output lines").required(false))
 		.get_matches();
 
 	let user_path = matches.get_one::<PathBuf>("dir").unwrap();
@@ -79,10 +79,10 @@ fn main() -> Result<(), io::Error> {
 	Ok(())
 }
 
-fn lines_from_file(file: &fs::File, limit: usize, user_reverse: bool) -> String {
+fn lines_from_file(file: &fs::File, user_lines: usize, user_reverse: bool) -> String {
 	let reader = RevLines::new(file);
 	let mut output = reader
-		.take(limit)
+		.take(user_lines)
 		.map(|line| match line {
 			Ok(this_line) => this_line,
 			Err(_) => String::from("[- binary data -]"),
