@@ -34,12 +34,17 @@ fn main() -> Result<(), io::Error> {
 			clap::arg!(-d --dotfiles "Include dot files in the output")
 				.required(false),
 		)
+		.arg(
+			clap::arg!(-r --reverse "Reverse the output lines")
+				.required(false),
+		)
 		.get_matches();
 
 	let user_path = matches.get_one::<PathBuf>("dir").unwrap();
 	let user_lines = matches.get_one::<usize>("lines").unwrap();
 	let user_output = matches.get_one::<PathBuf>("output").unwrap();
 	let user_dotfiles = matches.get_one::<bool>("dotfiles").unwrap();
+	let user_reverse = matches.get_one::<bool>("reverse").unwrap();
 	let mut contents = String::from("");
 
 	let files = fs::read_dir(user_path)?
@@ -61,7 +66,7 @@ fn main() -> Result<(), io::Error> {
 		contents.push_str(&format!("## NAME {}\n## HASH {hash}\n", this_path.display()));
 
 		let file = fs::File::open(this_path)?;
-		let lines = lines_from_file(&file, *user_lines);
+		let lines = lines_from_file(&file, *user_lines, *user_reverse);
 		contents.push_str(&format!("-->\n{}\n<--\n", lines));
 	}
 
@@ -74,14 +79,21 @@ fn main() -> Result<(), io::Error> {
 	Ok(())
 }
 
-fn lines_from_file(file: &fs::File, limit: usize) -> String {
+fn lines_from_file(file: &fs::File, limit: usize, user_reverse: bool) -> String {
 	let reader = RevLines::new(file);
-	reader
+	let mut output = reader
 		.take(limit)
 		.map(|line| match line {
 			Ok(this_line) => this_line,
 			Err(_) => String::from("[- binary data -]"),
 		})
-		.collect::<Vec<String>>()
-		.join("\n")
+		.collect::<Vec<String>>();
+
+	if user_reverse {
+		let length = output.len() - 1;
+		output[0..=length].reverse();
+		output = output.to_vec();
+	}
+
+	output.join("\n")
 }

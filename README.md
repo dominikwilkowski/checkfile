@@ -31,27 +31,29 @@ The log for 11 files was written successfully to ./checkfile.log
 Finished in 1.30ms
 ```
 
-This will create a file called `checkfile.log` that contains the name, checksum and last 50 lines of each file found in the current directory.
+This will create a file called `checkfile.log` that contains the name, checksum and last 50 lines _(in reverse order)_ of each file found in the current directory.
 
 The format of the `checkfile.log` is as follows:
 
 ```
-## NAME ./your_file.ext
+## NAME ./your_file1.ext
 ## HASH 54d0aee5a905190551f607309d162ff7d970f845ac646da13469da004d8c8b63
+-->
+last line
+second last line
+third last line
+[...]
+contents of file
+<--
+## NAME ./your_file2.ext
+## HASH 895344059424ed7f5b1946d80c0e2581e30fc2032584db6dc36c608849e6f165
 -->
 contents of file
 [...]
 contents of file
 <--
-## NAME ./your_file.ext
-## HASH 54d0aee5a905190551f607309d162ff7d970f845ac646da13469da004d8c8b63
--->
-contents of file
-[...]
-contents of file
-<--
-## NAME ./your_file.ext
-## HASH 54d0aee5a905190551f607309d162ff7d970f845ac646da13469da004d8c8b63
+## NAME ./your_file3.ext
+## HASH 104f62f4e75447518c3de21b9de71e757c0b7d719de77d36e81a024394777a53
 -->
 contents of file
 [...]
@@ -102,6 +104,48 @@ Set to include dot files in your log.
 ```
 
 _💡 Note: If checkfiles encounters a binary file it will try to read it and mark lines it couldn't with `[- binary data -]`_
+
+### -r, --reverse
+Type: `<bool>`  
+Default value: `false`
+
+Reverse the output lines so they look the same way the files look (mirror what `tail` does)
+
+```sh
+λ checkfile -r
+```
+
+The output file without the `--reverse` flag:
+
+```
+## NAME ./your_file.ext
+## HASH 54d0aee5a905190551f607309d162ff7d970f845ac646da13469da004d8c8b63
+-->
+last line
+second last line
+third last line
+<--
+```
+
+The output file with the `--reverse` flag:
+
+```
+## NAME ./your_file.ext
+## HASH 54d0aee5a905190551f607309d162ff7d970f845ac646da13469da004d8c8b63
+-->
+third last line
+second last line
+last line
+<--
+```
+
+For comparison, the contents of `./your_file.ext`:
+
+```
+third last line
+second last line
+last line
+```
 
 ## License
 Copyleft (c) 2023 Dominik Wilkowski.
