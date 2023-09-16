@@ -61,6 +61,17 @@ contents of file
 <--
 ```
 
+## Scheduling
+
+I use [`crontab`](https://www.man7.org/linux/man-pages/man5/crontab.5.html) to schedule `checkfile` to run every 6 hours and add the log to a folder.
+If something is wrong with the backblaze backup I can go into that folder and introspect what may have happened.
+
+```sh
+λ crontab -l
+
+0 */6 * * * checkfile -o ~/Desktop/logs/checkfile-$(date +%s).log /Library/Backblaze.bzpkg/bzdata/bzbackup/bzdatacenter >> ~/Desktop/logs/error.log 
+```
+
 ### <PATH>
 Type: `<path>`  
 Default value: `.`
