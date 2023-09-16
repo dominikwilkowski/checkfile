@@ -72,7 +72,7 @@ If something is wrong with the backblaze backup I can go into that folder and in
 0 */6 * * * checkfile -o ~/Desktop/logs/checkfile-$(date +%s).log /Library/Backblaze.bzpkg/bzdata/bzbackup/bzdatacenter >> ~/Desktop/logs/error.log 
 ```
 
-### <PATH>
+### `<PATH>`
 Type: `<path>`  
 Default value: `.`
 
@@ -82,7 +82,7 @@ Set the directory you would like to run `checkfile` on.
 λ checkfile /path/to/folder
 ```
 
-### -o, --output <PATH>
+### -o, --output `<PATH>`
 Type: `<path>`  
 Default value: `./checkfile.log`
 
@@ -94,7 +94,7 @@ Set this output file name and path.
 
 _💡 Note: This will not create non-existing folder so the path has to exist_
 
-### -l, --line <NUMBER>
+### -l, --line `<NUMBER>`
 Type: `<number>`  
 Default value: `50`
 
