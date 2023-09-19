@@ -1,7 +1,10 @@
+use chrono::Utc;
 use clap::{crate_version, Command};
+use crossterm::tty::IsTty;
 use rev_lines::RevLines;
 use std::fs;
 use std::io;
+use std::io::stdout;
 use std::path::PathBuf;
 use std::time::Instant;
 
@@ -40,6 +43,8 @@ fn main() -> Result<(), io::Error> {
 		.arg(clap::arg!(-r --reverse "Reverse the output lines").required(false))
 		.get_matches();
 
+	let is_tty: bool = stdout().is_tty();
+
 	let user_path = matches.get_one::<PathBuf>("dir").unwrap();
 	let user_lines = matches.get_one::<usize>("lines").unwrap();
 	let user_output = matches.get_one::<PathBuf>("output").unwrap();
@@ -57,10 +62,14 @@ fn main() -> Result<(), io::Error> {
 
 	let files_count = files.len();
 
-	println!("Processing files\n");
+	if is_tty {
+		println!("Processing files\n");
+	}
 
 	for (i, this_path) in files.iter().enumerate() {
-		println!("\x1b[2k\x1b[1F {i} of {files_count}");
+		if is_tty {
+			println!("\x1b[2k\x1b[1F {i} of {files_count}");
+		}
 		let bytes = std::fs::read(this_path).unwrap();
 		let hash = sha256::digest(&bytes);
 		contents.push_str(&format!("## NAME {}\n## HASH {hash}\n", this_path.display()));
@@ -71,11 +80,20 @@ fn main() -> Result<(), io::Error> {
 	}
 
 	fs::write(user_output, contents)?;
-	println!(
-		"\x1b[2F\x1b[0KThe log for {files_count} files was written successfully to {}\n\x1b[2kFinished in {:.2?}",
-		user_output.display(),
-		now.elapsed()
-	);
+	if is_tty {
+		println!(
+			"\x1b[2F\x1b[0KThe log for {files_count} files was written successfully to {}\n\x1b[2kFinished in {:.2?}",
+			user_output.display(),
+			now.elapsed()
+		);
+	} else {
+		println!(
+			"[OK] [{}] - written {files_count} files to {} in {:.2?}",
+			Utc::now().to_rfc3339(),
+			user_output.display(),
+			now.elapsed()
+		);
+	}
 	Ok(())
 }
 
